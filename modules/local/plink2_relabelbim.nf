@@ -54,10 +54,10 @@ process PLINK2_RELABELBIM {
         --make-just-bim zs \\
         --out ${output}
 
-    # -a: cross platform (mac, linux) method of preserving symlinks
+    # when creating symlinks of symlinks, resolve the original file
     # || true: if file exists, ignore error, will be handled by includeInputs
-    cp -a $geno ${output}.bed || true
-    cp -a $pheno ${output}.fam || true
+    ln -s \$(readlink -f "$geno") ${output}.bed || true
+    ln -s \$(readlink -f "$pheno") ${output}.fam || true
 
     gzip ${output}.vmiss ${output}.afreq
 

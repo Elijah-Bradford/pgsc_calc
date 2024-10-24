@@ -54,10 +54,10 @@ process PLINK2_RELABELPVAR {
         --make-just-pvar zs cols="-xheader,-maybequal,-maybefilter,-maybeinfo,-maybecm" \\
         --out $output
 
-    # -a: cross platform (mac, linux) method of preserving symlinks
+    # when creating symlinks of symlinks, resolve the original file
     # || true: if file exists, ignore error, will be handled by includeInputs
-    cp -a $geno ${output}.pgen || true
-    cp -a $pheno ${output}.psam || true
+    ln -s \$(readlink -f "$geno") ${output}.pgen || true
+    ln -s \$(readlink -f "$pheno") ${output}.psam || true
    
     gzip ${output}.vmiss
     gzip ${output}.afreq
