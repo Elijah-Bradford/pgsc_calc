@@ -17,3 +17,12 @@ RUN mamba env create --file=/opt/pgsc_calc/environments/plink2/environment.yml -
 RUN mamba env create --file=/opt/pgsc_calc/environments/pyyaml/environment.yml --prefix /opt/pyyaml
 
 RUN mamba env create --file=/opt/pgsc_calc/environments/zstd/environment.yml --prefix /opt/zstd
+
+ENV NXF_HOME=/opt/nextflow
+
+COPY container.config /opt/pgsc_calc/
+
+# grab plugins
+RUN mkdir $NXF_HOME && nextflow run /opt/pgsc_calc/main.nf -profile test,conda --only_input -c /opt/pgsc_calc/container.config
+
+ENV NXF_OFFLINE="true"
