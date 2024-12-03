@@ -22,7 +22,11 @@ ENV NXF_HOME=/opt/nextflow
 
 COPY container.config /opt/pgsc_calc/
 
-# grab plugins
-RUN mkdir $NXF_HOME && nextflow run /opt/pgsc_calc/main.nf -profile test,conda --only_input -c /opt/pgsc_calc/container.config
+# run test profile to grab plugins and make sure conda env is OK
+RUN mkdir -p $NXF_HOME && \
+    cat /opt/pgsc_calc/container.config >> /opt/pgsc_calc/nextflow.config && \
+    nextflow plugin install nf-schema@2.0.0,nf-prov@1.2.2,nf-google@1.15.2 && \
+    nextflow run /opt/pgsc_calc/main.nf -profile test,conda --only_input && \
+    rm -r work/
 
 ENV NXF_OFFLINE="true"
