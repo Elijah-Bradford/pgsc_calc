@@ -7,3 +7,6 @@ dependencies:
   - pgscatalog.core=0.3.3
   - pgscatalog.match=0.3.3
   - pgscatalog.calc=0.3.0
+  - pip
+  - pip:
+    - git+https://github.com/elijah-bradford/pygscatalog_addedhomeref.git@latest
